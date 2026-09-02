@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Analytics · {{ app_name }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Outreach analytics</h1>
+<div class="row g-3">
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted small">Candidates</div>
+    <div class="fs-3">{{ stats.total_candidates or 0 }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted small">Emails sent</div>
+    <div class="fs-3">{{ stats.emails_sent or 0 }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted small">Replies</div>
+    <div class="fs-3">{{ stats.replies or 0 }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted small">Reply rate</div>
+    <div class="fs-3">{{ stats.reply_rate or 0 }}%</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted small">Interested recruiters</div>
+    <div class="fs-3">{{ stats.interested or 0 }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted small">Interest rate</div>
+    <div class="fs-3">{{ stats.interest_rate or 0 }}%</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted small">Follow-ups sent</div>
+    <div class="fs-3">{{ stats.followups or 0 }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted small">Follow-ups due</div>
+    <div class="fs-3">{{ stats.due_followups or 0 }}</div>
+  </div></div></div>
+</div>
+{% endblock %}

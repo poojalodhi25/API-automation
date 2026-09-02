@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Email History · {{ app_name }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Email history</h1>
+<div class="card shadow-sm">
+  <div class="card-body table-responsive">
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th>When</th><th>Type</th><th>To</th><th>Subject</th><th>Reply</th><th>Follow-up due</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in history %}
+        <tr>
+          <td>{{ row.sent_at }}</td>
+          <td>{{ row.email_type }}</td>
+          <td>{{ row.recruiter_email }}</td>
+          <td>{{ row.subject }}</td>
+          <td>{% if row.reply_detected %}yes{% else %}no{% endif %}</td>
+          <td>{{ row.follow_up_due_at or "" }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-muted">No emails sent yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

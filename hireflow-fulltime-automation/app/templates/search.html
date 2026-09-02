@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Job Search · {{ app_name }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Full-time recruiter / job search</h1>
+<p class="text-muted">Uses Arbeitnow (no key). USAJobs and Adzuna run when keys are in <code>.env</code>.</p>
+<form id="searchForm" class="row g-2 align-items-end mb-3">
+  <div class="col-md-4">
+    <label class="form-label">Keyword / role</label>
+    <input class="form-control" name="keyword" value="software engineer" required />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Location</label>
+    <input class="form-control" name="location" value="United States" />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Role filter</label>
+    <input class="form-control" name="role" placeholder="optional" />
+  </div>
+  <div class="col-md-2">
+    <button class="btn btn-primary w-100" type="submit">Search APIs</button>
+  </div>
+</form>
+<p id="searchMessage" class="small text-muted"></p>
+<div id="jobResults"></div>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById("searchForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.target;
+  const message = document.getElementById("searchMessage");
+  message.textContent = "Searching public job APIs...";
+  const payload = {
+    keyword: form.keyword.value,
+    location: form.location.value,
+    role: form.role.value,
+    max_results: 20
+  };
+  const response = await fetch("/api/jobs/search", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  const data = await response.json();
+  message.textContent = (data.note || "") + " Sources: " + (data.sources || []).join(", ");
+  const box = document.getElementById("jobResults");
+  if (!data.jobs || !data.jobs.length) {
+    box.innerHTML = "<p class='text-muted'>No USA full-time jobs matched the filters.</p>";
+    return;
+  }
+  box.innerHTML = data.jobs.map((job, index) => `
+    <div class="card shadow-sm mb-2"><div class="card-body">
+      <div class="form-check">
+        <input class="form-check-input job-check" type="checkbox" value="${index}" id="job${index}" checked />
+        <label class="form-check-label" for="job${index}">
+          <strong>${job.title}</strong> · ${job.company} · ${job.location}
+          <span class="badge text-bg-secondary">${job.source}</span>
+        </label>
+      </div>
+      <p class="small text-muted mb-1">${(job.description || "").slice(0, 280)}</p>
+      <a href="${job.url}" target="_blank" rel="noreferrer">Open posting</a>
+      <div class="small">Emails found: ${(job.emails || []).join(", ") || "none in posting"}</div>
+    </div></div>
+  `).join("") + `<button class="btn btn-success" id="saveJobs">Save selected jobs / contacts</button>`;
+  window.__jobs = data.jobs;
+  document.getElementById("saveJobs").addEventListener("click", async () => {
+    const selected = [...document.querySelectorAll(".job-check:checked")].map(
+      (el) => window.__jobs[Number(el.value)]
+    );
+    const saveResponse = await fetch("/api/jobs/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(selected)
+    });
+    const saveData = await saveResponse.json();
+    message.textContent = JSON.stringify(saveData);
+  });
+});
+</script>
+{% endblock %}

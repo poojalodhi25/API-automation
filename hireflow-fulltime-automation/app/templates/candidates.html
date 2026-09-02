@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Candidates · {{ app_name }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Candidate profiles</h1>
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5">Add candidate</h2>
+        <form id="candidateForm" class="row g-2">
+          <div class="col-12"><input class="form-control" name="name" placeholder="Full name" required /></div>
+          <div class="col-12"><input class="form-control" name="email" type="email" placeholder="Email" required /></div>
+          <div class="col-md-6"><input class="form-control" name="phone" placeholder="Phone" /></div>
+          <div class="col-md-6"><input class="form-control" name="linkedin" placeholder="LinkedIn URL" /></div>
+          <div class="col-md-6"><input class="form-control" name="location" placeholder="Location" /></div>
+          <div class="col-md-6"><input class="form-control" name="relocation" placeholder="Relocation" /></div>
+          <div class="col-md-6"><input class="form-control" name="work_auth" placeholder="Work authorization" /></div>
+          <div class="col-md-6"><input class="form-control" name="availability" placeholder="Availability" /></div>
+          <div class="col-12"><input class="form-control" name="experience" placeholder="Experience" /></div>
+          <div class="col-12"><input class="form-control" name="primary_role" placeholder="Primary full-time role" required /></div>
+          <div class="col-12"><input class="form-control" name="search_roles" placeholder="Other search roles" /></div>
+          <div class="col-12"><input class="form-control" name="exclusion_keywords" placeholder="Exclusion keywords (comma separated)" /></div>
+          <div class="col-12"><input class="form-control" name="resume" type="file" /></div>
+          <div class="col-12"><button class="btn btn-primary" type="submit">Save candidate</button></div>
+        </form>
+        <p id="candidateMessage" class="small text-muted mt-2 mb-0"></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5">Saved candidates</h2>
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Email</th></tr></thead>
+            <tbody>
+              {% for row in candidates %}
+              <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.primary_role }}</td>
+                <td>{{ row.email }}</td>
+              </tr>
+              {% else %}
+              <tr><td colspan="4" class="text-muted">No candidates yet.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>bindForm("candidateForm", "/api/candidates", "candidateMessage");</script>
+{% endblock %}

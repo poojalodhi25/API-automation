@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Settings · {{ app_name }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Settings</h1>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <p><strong>MySQL:</strong> {% if mysql_ready %}connected{% else %}not connected{% endif %}</p>
+    <p><strong>USAJobs key:</strong> {% if usajobs_ready %}set{% else %}missing (Arbeitnow still works){% endif %}</p>
+    <p><strong>Adzuna keys:</strong> {% if adzuna_ready %}set{% else %}optional{% endif %}</p>
+    <p><strong>Gemini:</strong> {% if gemini_ready %}ready{% else %}missing (template emails will be used){% endif %}</p>
+    <p><strong>Gmail OAuth:</strong> {% if gmail_ready %}connected{% else %}not connected{% endif %}</p>
+    <a class="btn btn-primary" href="/api/gmail/connect">Connect Gmail</a>
+    <p class="small text-muted mt-3 mb-0">
+      Google Cloud OAuth client redirect URI must be
+      <code>http://127.0.0.1:8000/api/gmail/callback</code>
+    </p>
+  </div>
+</div>
+{% endblock %}

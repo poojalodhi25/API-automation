@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Outreach · {{ app_name }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Gmail outreach</h1>
+<div class="card shadow-sm mb-3">
+  <div class="card-body">
+    <form id="outreachForm" class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Candidate</label>
+        <select class="form-select" name="candidate_id" required>
+          <option value="">Select</option>
+          {% for row in candidates %}
+          <option value="{{ row.id }}">{{ row.name }} ({{ row.primary_role }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-8">
+        <label class="form-label">Recruiters</label>
+        {% for row in recruiters %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="recruiter_ids" value="{{ row.id }}" id="r{{ row.id }}" />
+          <label class="form-check-label" for="r{{ row.id }}">{{ row.recruiter_email }} · {{ row.role }}</label>
+        </div>
+        {% else %}
+        <p class="text-muted">Add recruiters first.</p>
+        {% endfor %}
+      </div>
+      <div class="col-12">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="customize_resume" id="customize" checked />
+          <label class="form-check-label" for="customize">AI resume alignment (Gemini)</label>
+        </div>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary" type="submit">Send outreach</button>
+        <button class="btn btn-outline-secondary" type="button" id="syncReplies">Sync replies</button>
+        <button class="btn btn-outline-secondary" type="button" id="sendFollowups">Send due follow-ups</button>
+      </div>
+    </form>
+    <pre id="outreachMessage" class="small mt-3 bg-white p-2 border rounded"></pre>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById("outreachForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.target;
+  const ids = [...form.querySelectorAll("input[name=recruiter_ids]:checked")].map((el) => Number(el.value));
+  const response = await fetch("/api/outreach/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      candidate_id: Number(form.candidate_id.value),
+      recruiter_ids: ids,
+      customize_resume: form.customize_resume.checked
+    })
+  });
+  document.getElementById("outreachMessage").textContent = JSON.stringify(await response.json(), null, 2);
+});
+document.getElementById("syncReplies").addEventListener("click", async () => {
+  const response = await fetch("/api/outreach/sync-replies", { method: "POST" });
+  document.getElementById("outreachMessage").textContent = JSON.stringify(await response.json(), null, 2);
+});
+document.getElementById("sendFollowups").addEventListener("click", async () => {
+  const response = await fetch("/api/outreach/followups", { method: "POST" });
+  document.getElementById("outreachMessage").textContent = JSON.stringify(await response.json(), null, 2);
+});
+</script>
+{% endblock %}

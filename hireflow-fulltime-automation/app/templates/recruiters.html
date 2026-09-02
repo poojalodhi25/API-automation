@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Recruiters · {{ app_name }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Recruiters &amp; contacts</h1>
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5">Add recruiter email</h2>
+        <p class="small text-muted">Job APIs rarely include recruiter email. Add a real address (your own Gmail works for a demo).</p>
+        <form id="recruiterForm" class="row g-2">
+          <div class="col-12"><input class="form-control" name="recruiter_name" placeholder="Name" /></div>
+          <div class="col-12"><input class="form-control" name="recruiter_email" type="email" placeholder="Email" required /></div>
+          <div class="col-12"><input class="form-control" name="company" placeholder="Company" /></div>
+          <div class="col-12"><input class="form-control" name="role" placeholder="Role" /></div>
+          <div class="col-12"><input class="form-control" name="location" placeholder="Location" value="United States" /></div>
+          <div class="col-12"><input class="form-control" name="post_url" placeholder="Job URL" /></div>
+          <div class="col-12"><textarea class="form-control" name="job_description" rows="4" placeholder="Job description"></textarea></div>
+          <div class="col-12"><button class="btn btn-primary" type="submit">Save recruiter</button></div>
+        </form>
+        <p id="recruiterMessage" class="small text-muted mt-2 mb-0"></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead><tr><th>ID</th><th>Email</th><th>Role</th><th>Status</th><th>Interested</th></tr></thead>
+            <tbody>
+              {% for row in recruiters %}
+              <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.recruiter_email }}</td>
+                <td>{{ row.role }}</td>
+                <td>{{ row.email_sent_status }}</td>
+                <td>{{ row.interested }}</td>
+              </tr>
+              {% else %}
+              <tr><td colspan="5" class="text-muted">No recruiters yet.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>bindForm("recruiterForm", "/api/recruiters", "recruiterMessage");</script>
+{% endblock %}

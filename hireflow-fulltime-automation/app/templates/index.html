@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · {{ app_name }}{% endblock %}
+{% block content %}
+<div class="mb-4">
+  <p class="text-uppercase small text-primary fw-semibold mb-1">API FULL-TIME</p>
+  <h1 class="h3">USA Full-Time / W2 / Direct Hire Outreach</h1>
+  <p class="text-muted mb-0">
+    Find full-time opportunities through public job APIs, filter for the USA market,
+    align resumes with Gemini, and send Gmail outreach with duplicate protection.
+  </p>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-2"><div class="card shadow-sm h-100"><div class="card-body">
+    <div class="text-muted small">USA jobs</div>
+    <div class="fs-3 fw-semibold">{{ stats.usa_jobs or 0 }}</div>
+  </div></div></div>
+  <div class="col-md-2"><div class="card shadow-sm h-100"><div class="card-body">
+    <div class="text-muted small">Recruiters</div>
+    <div class="fs-3 fw-semibold">{{ stats.total_recruiters or 0 }}</div>
+  </div></div></div>
+  <div class="col-md-2"><div class="card shadow-sm h-100"><div class="card-body">
+    <div class="text-muted small">Emails sent</div>
+    <div class="fs-3 fw-semibold">{{ stats.emails_sent or 0 }}</div>
+  </div></div></div>
+  <div class="col-md-2"><div class="card shadow-sm h-100"><div class="card-body">
+    <div class="text-muted small">Reply rate</div>
+    <div class="fs-3 fw-semibold">{{ stats.reply_rate or 0 }}%</div>
+  </div></div></div>
+  <div class="col-md-2"><div class="card shadow-sm h-100"><div class="card-body">
+    <div class="text-muted small">Interested</div>
+    <div class="fs-3 fw-semibold">{{ stats.interested or 0 }}</div>
+  </div></div></div>
+  <div class="col-md-2"><div class="card shadow-sm h-100"><div class="card-body">
+    <div class="text-muted small">Follow-ups due</div>
+    <div class="fs-3 fw-semibold">{{ stats.due_followups or 0 }}</div>
+  </div></div></div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="h5">1. Candidate profile</h2>
+      <p class="text-muted">Upload a resume and set the target full-time role.</p>
+      <a class="btn btn-primary" href="/candidates">Open candidates</a>
+    </div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="h5">2. Recruiter / job search</h2>
+      <p class="text-muted">Search USAJobs, Arbeitnow, and optional Adzuna APIs.</p>
+      <a class="btn btn-primary" href="/search">Search jobs</a>
+    </div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="h5">3. Gmail outreach</h2>
+      <p class="text-muted">Connect Gmail, send mail, track replies and follow-ups.</p>
+      <a class="btn btn-primary" href="/outreach">Open outreach</a>
+    </div></div>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h5 mb-3">Project modules</h2>
+    <ul class="row list-unstyled mb-0">
+      <li class="col-md-6 mb-2">Full-Time W2 &amp; Direct Hire Recruiter Search</li>
+      <li class="col-md-6 mb-2">USA Recruiter &amp; Opportunity Filtering</li>
+      <li class="col-md-6 mb-2">AI Resume Alignment</li>
+      <li class="col-md-6 mb-2">Full-Time Job Requirement Matching</li>
+      <li class="col-md-6 mb-2">Recruiter Outreach Preparation</li>
+      <li class="col-md-6 mb-2">Gmail Automated Outreach</li>
+      <li class="col-md-6 mb-2">Personalized Recruiter Communication</li>
+      <li class="col-md-6 mb-2">Reply Detection</li>
+      <li class="col-md-6 mb-2">Interested Recruiter Identification</li>
+      <li class="col-md-6 mb-2">Follow-Up Opportunity Tracking</li>
+      <li class="col-md-6 mb-2">Duplicate Email Prevention</li>
+      <li class="col-md-6 mb-2">Outreach Analytics &amp; Reporting</li>
+      <li class="col-md-6 mb-2">Recruiter Engagement Tracking</li>
+      <li class="col-md-6 mb-2">Response Trend Analysis</li>
+      <li class="col-md-6 mb-2">Campaign Performance Measurement</li>
+      <li class="col-md-6 mb-2">Candidate Profile Presentation</li>
+      <li class="col-md-6 mb-2">Recruitment Data Organization</li>
+      <li class="col-md-6 mb-2">USA Market Relevance Filtering</li>
+      <li class="col-md-6 mb-2">Professional Communication Workflow</li>
+      <li class="col-md-6 mb-2">Hiring Outreach Performance Tracking</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}
